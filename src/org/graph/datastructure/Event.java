@@ -14,12 +14,12 @@ public class Event{
       public PointY point;
       
       //jika circle event harus nyimpen pointer ke leaf tree.
-      public Arc arc;
+      public ArcNode arcNode;
       
       
       public boolean site;
-      public Event(PointY point,Arc arc){
+      public Event(PointY point,ArcNode arcNode){
          this.point = point;
-         this.arc=arc;
+         this.arcNode=arcNode;
       }
   }
