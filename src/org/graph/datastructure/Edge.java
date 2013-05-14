@@ -4,11 +4,18 @@
  */
 package org.graph.datastructure;
 
+import java.awt.Point;
+
 /**
  *
  * @author juan.karsten
  */
 public class Edge {
-    public PointY start;
-    public PointY end;
+    public Point start;
+    public Point end;
+    
+    public Edge(Point a, Point b){
+       start = a;
+       end = b;
+    }
 }
