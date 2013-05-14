@@ -9,12 +9,14 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import org.graph.datastructure.Edge;
 
 public class PointsPanel extends JPanel {
    private static final long serialVersionUID = 1L;
    private ArrayList<Point> pointList;
    private ArrayList<Point> hull;
    private ArrayList<Point> closestPair;
+   ArrayList<Edge> ar;
    
    int autoCalculate = 0; 
    /* 1. incremental convex hull
@@ -64,6 +66,10 @@ public class PointsPanel extends JPanel {
          double jarak = closestPair.get(0).distance(closestPair.get(1));
          page.drawString("Distance: "+jarak, 5, 30);
          
+      }else if(ar!=null){
+          for(Edge edge: ar){
+              page.drawLine(edge.start.x,edge.start.y,edge.end.x,edge.end.y);
+          }
       }
       page.drawString ("Count: " + pointList.size(), 5, 15);
       
@@ -137,7 +143,9 @@ public class PointsPanel extends JPanel {
 
 public void fortune() {
   // TODO Auto-generated method stub
-  
+    VoronoiDiagram vor=new VoronoiDiagram(pointList);
+    ar=vor.fortuneAlgorithm();
+    
 }
    
    //**************incremental********************
