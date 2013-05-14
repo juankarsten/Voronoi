@@ -31,6 +31,7 @@ public class VoronoiDiagram{
       q= new PriorityQueue<Event>();
       for(Point p:points){
          q.add(new Event(p));
+         System.out.println(p);
       }
       //Initialize an empty status structure T
       T = new BinarySearchTree();
@@ -62,6 +63,7 @@ public class VoronoiDiagram{
    }
    private void handleSiteEvent(Event top) {
       //1. if T is empty insert pi into it and return
+      System.out.println("top: "+top.point);
       if(T.isEmpty()){
          //masih satu arc top.point bukan circle event jadi circle event point=null
 //         T.insert(new ArcNode(new Arc(top.point)));
@@ -129,15 +131,10 @@ public class VoronoiDiagram{
             }
             //4.create new half edge in voronoi diagram
             //which will be traced out by the two new breakpoints
-            Point high = pjpi.getBreakPoint(pi.y);
-            Point low = pipj.getBreakPoint(pi.y);
-            
-            if( high.y < low.y){
-               Point tmp = high;
-               high = low;
-               low = tmp;
-            }
-            Edge edge = new Edge(high, low);
+            Point l = pjpi.getBreakPoint(pi.y);
+            Point r = pipj.getBreakPoint(pi.y);
+         
+            Edge edge = new Edge(l, r);
             pipj.edge = edge;
             pjpi.edge = edge;
             edgeList.addEdge(edge);

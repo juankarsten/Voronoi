@@ -6,6 +6,9 @@
 
 import java.util.ArrayList;
 import javax.swing.JPanel;
+
+import org.graph.datastructure.Edge;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -16,12 +19,13 @@ public class PointsPanel extends JPanel {
    private ArrayList<Point> pointList;
    private ArrayList<Point> hull;
    private ArrayList<Point> closestPair;
-   ArrayList<Edge> ar;
+   private ArrayList<Edge> edgeList;
    
    int autoCalculate = 0; 
    /* 1. incremental convex hull
       2. divide & conquer convex hull
       3. divide & conquer closest pair of points
+      4. voronoi diagram
    */
 
    //------------------------------------------------------------
@@ -66,10 +70,15 @@ public class PointsPanel extends JPanel {
          double jarak = closestPair.get(0).distance(closestPair.get(1));
          page.drawString("Distance: "+jarak, 5, 30);
          
-      }else if(ar!=null){
-          for(Edge edge: ar){
-              page.drawLine(edge.start.x,edge.start.y,edge.end.x,edge.end.y);
-          }
+      }
+      else if(autoCalculate == 4){
+         for(Edge edge: edgeList) if(edge.start!= null && edge.end != null){
+            int x1 = edge.start.x;
+            int y1 = edge.start.y;
+            int x2 = edge.end.x;
+            int y2 = edge.end.y;
+            page.drawLine(x1, y1, x2, y2);
+         }
       }
       page.drawString ("Count: " + pointList.size(), 5, 15);
       
@@ -141,12 +150,12 @@ public class PointsPanel extends JPanel {
       
 }
 
-public void fortune() {
-  // TODO Auto-generated method stub
-    VoronoiDiagram vor=new VoronoiDiagram(pointList);
-    ar=vor.fortuneAlgorithm();
-    
-}
+   
+   public void fortune() {
+      edgeList = new VoronoiDiagram(pointList).fortuneAlgorithm();
+      autoCalculate = 4;
+      repaint();
+   }
    
    //**************incremental********************
    public void createIncrement(){
