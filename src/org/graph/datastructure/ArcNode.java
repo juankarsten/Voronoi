@@ -32,7 +32,7 @@ public class ArcNode {
       return rValue == null;
    }
    public boolean isInternalNode(){
-      return lValue != null;
+      return rValue != null;
    }
    
    public boolean isLeftOf(ArcNode x){
@@ -80,14 +80,23 @@ public class ArcNode {
        c1=c1-c2;
        
        double xx,yy;
-       if(lBreakPoint){
-          xx=(-b1-Math.sqrt(b1*b1-4*a1*c1))/(2*a1);
-          yy=(1/(2*(py1-ly)))*(xx*xx-2*px1*xx+px1*px1+py1*py1-ly*ly);
-       } else{
-          xx=(-b1+Math.sqrt(b1*b1-4*a1*c1))/(2*a1);
-          yy=(1/(2*(py2-ly)))*(xx*xx-2*px2*xx+px2*px2+py2*py2-ly*ly);
+       try{
+          if(lBreakPoint){
+             xx=(-b1-Math.sqrt(b1*b1-4*a1*c1))/(2*a1);
+             yy=(1/(2*(py1-ly)))*(xx*xx-2*px1*xx+px1*px1+py1*py1-ly*ly);
+          } else{
+             xx=(-b1+Math.sqrt(b1*b1-4*a1*c1))/(2*a1);
+             yy=(1/(2*(py2-ly)))*(xx*xx-2*px2*xx+px2*px2+py2*py2-ly*ly);
+          }
+          System.out.println("TidakNull: "+lValue.point+rValue.point+xx+","+yy+"ly:"+ly);
+          return new Point((int) xx, (int) yy);
        }
-       return new Point((int) xx, (int) yy);
+       catch(ArithmeticException ae){
+          System.out.println("Breakpoint Null:");
+          System.out.println("ly="+ly+", "+lValue.point+", "+rValue.point);
+          return null;
+       }
+       
    }
 
    
