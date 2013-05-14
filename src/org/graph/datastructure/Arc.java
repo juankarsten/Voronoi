@@ -18,6 +18,10 @@ public class Arc implements Comparable<Arc>{
         this.point = point;
         this.circleEvent = circleEvent;
     }
+    
+    public Arc(PointY point) {
+       this.point = point;
+    }
 
 
     //arc diurutkan berdasarkan x

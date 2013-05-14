@@ -5,13 +5,13 @@ import java.awt.geom.Point2D;
 
 public class ArcNode {
     //anak kiri dan kanan
-   ArcNode left, right;
+   public ArcNode left, right;
    
-   Arc lValue, rValue;
+   public Arc lValue, rValue;
    
    Edge edge;
 
-   ArcNode(Arc x){
+   public ArcNode(Arc x){
       lValue = x;
    }
    ArcNode(Arc x, Arc y){

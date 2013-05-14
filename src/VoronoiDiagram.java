@@ -6,7 +6,10 @@ import java.util.NavigableSet;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
 import org.graph.datastructure.Arc;
+import org.graph.datastructure.ArcNode;
+import org.graph.datastructure.BinarySearchTree;
 import org.graph.datastructure.Event;
+import org.graph.datastructure.Pair;
 import org.graph.datastructure.PointY;
 
 
@@ -17,7 +20,7 @@ public class VoronoiDiagram{
    }
    
    //status arc
-   TreeMap<Arc, PointY> T;
+   BinarySearchTree T;
    //event queue
    PriorityQueue<Event> q;
    
@@ -33,8 +36,8 @@ public class VoronoiDiagram{
          q.add(new Event((PointY)p,null));
       }
       
-      //TODO Initialize an empty status structure T
-      T = new TreeMap<Arc, PointY>();
+      //Initialize an empty status structure T
+      T = new BinarySearchTree();
       
       //TODO Initialize an empty DCEL D
       //??????????????????????????????
@@ -61,33 +64,40 @@ public class VoronoiDiagram{
       return new ArrayList<Point>();
    }
    private void handleSiteEvent(Event top) {
-      // TODO Auto-generated method stub
       //1. if T is empty insert pi into it and return
       if(T.isEmpty()){
-         //T.put(top.point, top.point);
-          
-          //masih satu arc top.point bukan circle event jadi circle event point=null
-          T.put(new Arc(top.point, null),null);
+         //masih satu arc top.point bukan circle event jadi circle event point=null
+         T.insert(new ArcNode(new Arc(top.point)));
       }
       else{
             PointY pi=top.point;
            //2. Search in T for the arc a vertically above pi.
-            Iterator<Arc> iterator=T.navigableKeySet().iterator();
-            while(iterator.hasNext()){
-                Arc arc=iterator.next();
-                Point arcPoint=arc.point;
-                if(arcPoint.x==pi.x&&arcPoint.y<=pi.y&&arc.circleEvent!=null){
-                    arc.circleEvent=null;
-                    q.remove(arc.circleEvent);
-                }
+            ArcNode a = T.root;
+            // penyimpanan parent a dan posisi a terhadap pa
+            ArcNode pa = null;
+            boolean left = true;
+                  
+            while(a.isInternalNode()){
+               // jika di titik pi di kanan breakpoint kanan: 
+               Pair breakpoint = a.getBreakPoint(pi.y);
+               pa = a;
+               if (pi.x < breakpoint.p2.x){
+                  a = a.left;
+                  left = true;
+               }
+               else{
+                  a = a.right;
+                  left = false;
+               }
             }
-          
+            
             //If the leaf representing a has a pointer to a circle event in Q delete the circle event from Q
-            //3. Replace the leaf of T that represents a with a subtree having three leaves.
-            Arc arc=new Arc(pi, null);
-            T.put(arc,null);
-            Arc prev=T.ceilingKey(arc);
-            Arc next=T.floorKey(arc);
+            //jika ada pointer ke circleEvent, event ini diabaikan
+            if(a.lValue.circleEvent == null && a.rValue.circleEvent == null){
+             //3. Replace the leaf of T that represents a with a subtree having three leaves.
+             //TODO
+               
+            }
             
             //4.create new half edge in voronoi diagram
            //?????????????belum ada DCEL

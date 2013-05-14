@@ -11,8 +11,8 @@ import java.awt.Point;
  * @author juan.karsten
  */
 public class Pair {
-    Point p1;
-    Point p2;
+    public Point p1;
+    public Point p2;
 
     public Pair(Point p1, Point p2) {
         this.p1 = p1;

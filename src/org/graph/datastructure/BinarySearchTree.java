@@ -1,10 +1,17 @@
 package org.graph.datastructure;
 
 public class BinarySearchTree {
-   ArcNode root;
+   public ArcNode root;
    
+   public BinarySearchTree(){
+      
+   }
    public BinarySearchTree(ArcNode root) {
       this.root = root;
+   }
+   
+   public boolean isEmpty(){
+      return root == null;
    }
    
    public void insert(ArcNode x){
