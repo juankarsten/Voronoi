@@ -19,11 +19,8 @@ public class BinarySearchTree {
       // TODO Auto-generated method stub
       
    }
-   public Point getTripleLeftPoint(ArcNode y) {
-      // TODO Auto-generated method stub
-      return null;
-   }
-   public ArcNode leftOf(ArcNode y) {
+   
+   public Pair getCirclePoint(ArcNode left) {
       // TODO Auto-generated method stub
       return null;
    }

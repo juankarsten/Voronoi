@@ -11,8 +11,6 @@ public class ArcNode {
    public Arc lValue, rValue;
    public boolean lBreakPoint;
    
-   public ArrayList<Event> circleEvents;
-   
    public Edge edge;
 
    public ArcNode parent;
@@ -28,8 +26,9 @@ public class ArcNode {
       this.lBreakPoint = true;
    }
    
-   public ArcNode(Arc pjj, ArcNode pjpi) {
-      // TODO Auto-generated constructor stub
+   public ArcNode(Arc x, ArcNode parent) {
+      lValue = x;
+      this.parent = parent;
    }
    public boolean isLeaf(){
       return rValue == null;
@@ -91,5 +90,13 @@ public class ArcNode {
           yy=(1/(2*(py2-ly)))*(xx*xx-2*px2*xx+px2*px2+py2*py2-ly*ly);
        }
        return new Point((int) xx, (int) yy);
+   }
+   public ArcNode getLeftSibling() {
+      // TODO Auto-generated method stub
+      return null;
+   }
+   public ArcNode getRightSibling() {
+      // TODO Auto-generated method stub
+      return null;
    }
 }

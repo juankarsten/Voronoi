@@ -90,8 +90,10 @@ public class VoronoiDiagram{
          }
          
          //If the leaf representing a has a pointer to a circle event in Q delete the circle event from Q
-         //jika ada pointer ke circleEvent, event ini diabaikan
-         if(a.circleEvent == null){
+         if(a.circleEvent != null){
+            q.remove(a.circleEvent);
+         }
+         else {
             //3. Replace the leaf of T that represents a with a subtree 
             //having three leaves. The middle leaf stores the new site pi               
             //the other two leaves store the site pj that was originally
@@ -108,21 +110,33 @@ public class VoronoiDiagram{
             
             pjpi.left = new ArcNode(pjj, pjpi);
             pjpi.right = pipj;
-            pipj.left = new ArcNode(pii, pipj);
+            pipj.parent = pjpi;
+            ArcNode pin = new ArcNode(pii, pipj);
+            pipj.left = pin;
             pipj.right = new ArcNode(pjj, pipj);
             
             if(pa == a){
                T.root = pjpi;
             }
             else if(left){
+               pjpi.parent = pa;
                pa.left = pjpi;
             }
             else{
+               pipj.parent = pa;
                pa.right = pjpi;
             }
             //4.create new half edge in voronoi diagram
             //which will be traced out by the two new breakpoints
-            Edge edge = new Edge(pjpi.getBreakPoint(pi.y), pipj.getBreakPoint(pi.y));
+            Point high = pjpi.getBreakPoint(pi.y);
+            Point low = pipj.getBreakPoint(pi.y);
+            
+            if( high.y < low.y){
+               Point tmp = high;
+               high = low;
+               low = tmp;
+            }
+            Edge edge = new Edge(high, low);
             pipj.edge = edge;
             pjpi.edge = edge;
             edgeList.addEdge(edge);
@@ -131,10 +145,18 @@ public class VoronoiDiagram{
             //to see if the breakpoints converge. If so, insert the
             //circle event into Q and add pointer between the node
             //in T and the node in Q.
-            
-            
             //do the same for the triple where the new arch is right
-            
+            Pair convergePoints = T.getCirclePoint(pin);
+            if(convergePoints.p1 != null){
+               Event event = new Event(convergePoints.p1, pin);
+               pin.getLeftSibling().circleEvent = event;
+               q.add(event);
+            }
+            if(convergePoints.p2 != null){
+               Event event = new Event(convergePoints.p2, pin);
+               pin.getRightSibling().circleEvent = event;
+               q.add(event);
+            }
          }
       }
    }
@@ -173,11 +195,23 @@ public class VoronoiDiagram{
       //If so, insert the corresponding circle event into Q and
       //set pointers between the new circle event in Q and the
       //corresponding leaf of T.
-      Point leftPoint = T.getTripleLeftPoint(y);
-      if(leftPoint != null) q.add(new Event(leftPoint, T.leftOf(y)));
-      
       //Do the same for the triple where the former right
       //neighbor is the middle arc.
+      
+      Pair convergePoints = T.getCirclePoint(y.getRightSibling());
+      if(convergePoints.p1 != null){
+         //TODO
+         Event newEvent = new Event(convergePoints.p1, y.getLeftSibling());
+         y.getLeftSibling().circleEvent = newEvent;
+         q.add(event);
+      }
+      convergePoints = T.getCirclePoint(y.getLeftSibling());
+      if(convergePoints.p2 != null){
+         //TODO
+         Event newEvent = new Event(convergePoints.p2, y.getRightSibling());
+         y.getRightSibling().circleEvent = event;
+         q.add(event);
+      }
       
    }
 
