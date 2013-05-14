@@ -89,36 +89,78 @@ public class ArcNode {
        }
        return new Point((int) xx, (int) yy);
    }
+
    
-   public ArcNode getRightSibling(ArcNode pipj){
+   
+   
+   public ArcNode getRightSibling(){
        //jika pjpi root ga mungkin ada sibling di kanan
+       ArcNode pipj=this;
+//       if(pipj.parent==null)return null;
+//       while(pipj.parent.right==pipj){
+//           pipj=pipj.parent;
+//           if(pipj==null)return null;
+//       }
+//       pipj=pipj.parent;
+//       ArcNode kanan=pipj.right;
+//       while(!kanan.isLeaf()){
+//           kanan=kanan.left;
+//       }
+//       return kanan;
        if(pipj.parent==null)return null;
-       while(pipj.parent.right==pipj){
-           pipj=pipj.parent;
-           if(pipj==null)return null;
+       boolean finish=false;
+       while(!finish){
+           ArcNode parent=pipj.parent;
+           if(parent==null){
+               return null;
+           }
+           if(parent.lValue.equals(pipj.lValue)){
+               finish=true;
+           }
+           pipj=parent;
        }
-       pipj=pipj.parent;
-       ArcNode kanan=pipj;
-       while(!kanan.isLeaf()){
+       ArcNode kanan=pipj.right;
+         while(!kanan.isLeaf()){
            kanan=kanan.left;
        }
        return kanan;
    }
    
-   public ArcNode getLeftSibling(ArcNode pipj){
+//   public ArcNode getLeftSibling(){
+//       //jika pjpi root ga mungkin ada sibling di kanan
+//       ArcNode pipj=this;
+//       if(pipj.parent==null)return null;
+//       while(pipj.parent.left==pipj){
+//           pipj=pipj.parent;
+//           if(pipj==null)return null;
+//       }
+//       pipj=pipj.parent;
+//       ArcNode kiri=pipj;
+//       while(!kiri.isLeaf()){
+//           kiri=kiri.right;
+//       }
+//       return kiri;
+//   }
+   
+public ArcNode getLeftSibling(){
        //jika pjpi root ga mungkin ada sibling di kanan
+       ArcNode pipj=this;
        if(pipj.parent==null)return null;
-       while(pipj.parent.left==pipj){
-           pipj=pipj.parent;
-           if(pipj==null)return null;
+       boolean finish=false;
+       while(!finish){
+           ArcNode parent=pipj.parent;
+           if(parent==null){
+               return null;
+           }
+           if(parent.rValue.equals(pipj.lValue)){
+               finish=true;
+           }
+           pipj=parent;
        }
-       pipj=pipj.parent;
-       ArcNode kiri=pipj;
-       while(!kiri.isLeaf()){
+       ArcNode kiri=pipj.left;
+         while(!kiri.isLeaf()){
            kiri=kiri.right;
        }
        return kiri;
-   }
-   
-   
+   }   
 }

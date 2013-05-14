@@ -28,6 +28,46 @@ public class BinarySearchTree {
       return null;
    }
    
+   public Point getRightCirclePoint(ArcNode pi){
+       ArcNode pj=pi.getRightSibling();
+       if(pj==null)return null;
+       ArcNode pk=pj.getRightSibling();
+       if(pk==null)return null;
+       Point p2=circleCenter(pi.lValue.point, pj.lValue.point, pk.lValue.point);
+       return p2;
+   }
+   
+   public Point getLeftCirclePoint(ArcNode pi){
+       ArcNode ph=pi.getLeftSibling();
+       if(ph==null)return null;
+       ArcNode pg=ph.getLeftSibling();
+       if(pg==null)return null;
+       Point p2=circleCenter(pg.lValue.point, ph.lValue.point, pi.lValue.point);
+       return p2;
+   }
+   
+   public Pair getCirclePoint(ArcNode pi){
+       return new Pair(getRightCirclePoint(pi),getLeftCirclePoint(pi));
+   }
+   
+   private Point circleCenter(Point A, Point B, Point C) {
+
+    double yDelta_a = B.y - A.y;
+    double xDelta_a = B.x - A.x;
+    double yDelta_b = C.y - B.y;
+    double xDelta_b = C.x - B.x;
+    Point center = new Point();
+
+    double aSlope = yDelta_a/xDelta_a;
+    double bSlope = yDelta_b/xDelta_b;  
+    double xcenter = (aSlope*bSlope*(A.y - C.y) + bSlope*(A.x + B.x)
+        - aSlope*(B.x+C.x) )/(2* (bSlope-aSlope) );
+    double ycenter = -1*(center.x - (A.x+B.x)/2)/aSlope +  (A.y+B.y)/2;
+
+    ycenter+=Math.sqrt(Math.pow(xcenter-B.x,2)+Math.pow(ycenter-B.y,2));
+    return new Point((int)xcenter, (int)ycenter);
+  }
+   
 //   public void insert(ArcNode x){
 //      if (root == null){
 //         root = x;
