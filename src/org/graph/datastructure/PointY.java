@@ -13,6 +13,12 @@ import java.awt.Point;
 public class PointY extends Point implements Comparable<PointY>{
       private static final long serialVersionUID = 1701444726214635657L;
 
+    public PointY(int x, int y) {
+        super(x, y);
+    }
+
+      
+      
       @Override
       public int compareTo(PointY o) {
          int dy=(int)(this.y-o.y);

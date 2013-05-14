@@ -71,7 +71,7 @@ public class VoronoiDiagram{
       if(T.isEmpty()){
          //masih satu arc top.point bukan circle event jadi circle event point=null
 //         T.insert(new ArcNode(new Arc(top.point)));
-         T.root = new ArcNode(new Arc(top.point));
+         T.root = new ArcNode(new Arc(top.point),null);
       }
       else{
          PointY pi=top.point;
@@ -109,13 +109,13 @@ public class VoronoiDiagram{
             //Store the tuples <pj,pi> and <pi,pj> representing the new
             //breakpoints at the two new internal nodes.
             
-            ArcNode pjpi = new ArcNode(pjj, pii, true);
-            ArcNode pipj = new ArcNode(pii, pjj, false);
+            ArcNode pjpi = new ArcNode(pjj, pii, true,a.parent);
+            ArcNode pipj = new ArcNode(pii, pjj, false,pjpi);
             
-            pjpi.left = new ArcNode(pjj);
+            pjpi.left = new ArcNode(pjj,pjpi);
             pjpi.right = pipj;
-            pipj.left = new ArcNode(pii);
-            pipj.right = new ArcNode(pjj);
+            pipj.left = new ArcNode(pii,pipj);
+            pipj.right = new ArcNode(pjj,pipj);
             
             if(pa == a){
                T.root = pjpi;

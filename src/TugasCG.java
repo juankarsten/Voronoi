@@ -23,6 +23,9 @@ import java.awt.*;
 import java.awt.event.*;    
 import javax.swing.*;       
 import javax.swing.border.*;
+import org.graph.datastructure.Arc;
+import org.graph.datastructure.ArcNode;
+import org.graph.datastructure.PointY;
 
 public class TugasCG extends JFrame {
    // This application relies on the PointsPanel component
@@ -105,6 +108,8 @@ public class TugasCG extends JFrame {
       toolbar.add(cp);
       toolbar.add(fortune);
       contentPane.add(toolbar, BorderLayout.NORTH);
+      
+      
    }
 
    /* This inner class defines the "clear" action */

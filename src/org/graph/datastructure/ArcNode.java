@@ -10,15 +10,19 @@ public class ArcNode {
    public Arc lValue, rValue;
    public boolean lBreakPoint;
    
+   public ArcNode parent;
+   
    public Edge edge;
 
-   public ArcNode(Arc x){
+   public ArcNode(Arc x, ArcNode parent){
       lValue = x;
+      this.parent=parent;
    }
-   public ArcNode(Arc x, Arc y, boolean lBreakPoint){
+   public ArcNode(Arc x, Arc y, boolean lBreakPoint, ArcNode parent){
       lValue = x;
       rValue = y;
       this.lBreakPoint = true;
+      this.parent=parent;
    }
    
    public boolean isLeaf(){
@@ -82,4 +86,36 @@ public class ArcNode {
        }
        return new Point((int) xx, (int) yy);
    }
+   
+   public ArcNode getRightSibling(ArcNode pipj){
+       //jika pjpi root ga mungkin ada sibling di kanan
+       if(pipj.parent==null)return null;
+       while(pipj.parent.right==pipj){
+           pipj=pipj.parent;
+           if(pipj==null)return null;
+       }
+       pipj=pipj.parent;
+       ArcNode kanan=pipj;
+       while(!kanan.isLeaf()){
+           kanan=kanan.left;
+       }
+       return kanan;
+   }
+   
+   public ArcNode getLeftSibling(ArcNode pipj){
+       //jika pjpi root ga mungkin ada sibling di kanan
+       if(pipj.parent==null)return null;
+       while(pipj.parent.left==pipj){
+           pipj=pipj.parent;
+           if(pipj==null)return null;
+       }
+       pipj=pipj.parent;
+       ArcNode kiri=pipj;
+       while(!kiri.isLeaf()){
+           kiri=kiri.right;
+       }
+       return kiri;
+   }
+   
+   
 }
