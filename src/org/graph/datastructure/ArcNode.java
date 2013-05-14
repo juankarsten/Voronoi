@@ -12,7 +12,7 @@ public class ArcNode {
    public boolean lBreakPoint;
    
    public ArcNode parent;
-   
+
    public Edge edge;
 
    public Event circleEvent;
