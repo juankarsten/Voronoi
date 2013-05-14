@@ -12,7 +12,6 @@ import org.graph.datastructure.Edge;
 import org.graph.datastructure.EdgeList;
 import org.graph.datastructure.Event;
 import org.graph.datastructure.Pair;
-import org.graph.datastructure.PointY;
 
 
 public class VoronoiDiagram{
@@ -25,25 +24,18 @@ public class VoronoiDiagram{
    BinarySearchTree T;
    //event queue
    PriorityQueue<Event> q;
-   EdgeList edgeList = new EdgeList();
+   EdgeList edgeList;
    
-   public ArrayList<Point> fortuneAlgorithm(){
+   public ArrayList<Edge> fortuneAlgorithm(){
       //1. Initialize the event queue Q with all site events
-      q= new PriorityQueue<Event>(11, new Comparator<Event>(){
-         @Override
-         public int compare(Event o1, Event o2) {
-            return o1.point.compareTo(o2.point);
-         }
-      });
+      q= new PriorityQueue<Event>();
       for(Point p:points){
-         q.add(new Event((PointY)p,null));
+         q.add(new Event(p));
       }
-      
       //Initialize an empty status structure T
       T = new BinarySearchTree();
-      
-      //TODO Initialize an empty DCEL D
-      //??????????????????????????????
+      //Initialize an empty DCEL D
+      edgeList = new EdgeList();
       
       //While ! is not empty
       while(!q.isEmpty()){
@@ -54,6 +46,8 @@ public class VoronoiDiagram{
             handleSiteEvent(top);
          }
          else{
+            //handle circle event y where y is the leaf of T
+            //representing the arc that will disappear
             handleCircleEvent(top);
          }
       }
@@ -64,7 +58,7 @@ public class VoronoiDiagram{
       //TODO Traverse the half-edges of the DCEL to ad the cell records
       
       //TODO return masih asal
-      return new ArrayList<Point>();
+      return edgeList.edges;
    }
    private void handleSiteEvent(Event top) {
       //1. if T is empty insert pi into it and return
@@ -74,7 +68,7 @@ public class VoronoiDiagram{
          T.root = new ArcNode(new Arc(top.point),null);
       }
       else{
-         PointY pi=top.point;
+         Point pi=top.point;
         //2. Search in T for the arc a vertically above pi.
          ArcNode a = T.root;
          // penyimpanan parent a dan posisi a terhadap pa
@@ -97,7 +91,7 @@ public class VoronoiDiagram{
          
          //If the leaf representing a has a pointer to a circle event in Q delete the circle event from Q
          //jika ada pointer ke circleEvent, event ini diabaikan
-         if(a.lValue.circleEvent == null && a.rValue.circleEvent == null){
+         if(a.circleEvent == null){
             //3. Replace the leaf of T that represents a with a subtree 
             //having three leaves. The middle leaf stores the new site pi               
             //the other two leaves store the site pj that was originally
@@ -112,10 +106,11 @@ public class VoronoiDiagram{
             ArcNode pjpi = new ArcNode(pjj, pii, true,a.parent);
             ArcNode pipj = new ArcNode(pii, pjj, false,pjpi);
             
-            pjpi.left = new ArcNode(pjj,pjpi);
+
+            pjpi.left = new ArcNode(pjj, pjpi);
             pjpi.right = pipj;
-            pipj.left = new ArcNode(pii,pipj);
-            pipj.right = new ArcNode(pjj,pipj);
+            pipj.left = new ArcNode(pii, pipj);
+            pipj.right = new ArcNode(pjj, pipj);
             
             if(pa == a){
                T.root = pjpi;
@@ -145,10 +140,45 @@ public class VoronoiDiagram{
       }
    }
    
-   private void handleCircleEvent(Event top) {
-      // TODO Auto-generated method stub
+   private void handleCircleEvent(Event event) {
+
+      ArcNode y = event.arcNode;
       
-      //1. 
+      //1. Delete the leaf y that represents the disappearing
+      // arc a from T. Delete all circle events involving a from
+      // Q; these can be found using the pointers from the 
+      // predecessor and successor of y in T
+      // (The circle event where a is the middle arc is currently
+      // being handled, and has been deleted from Q.)
+      
+      T.delete(y);
+      q.remove(y.circleEvent);
+      
+      //2. Add the center of the circle causing the event as a 
+      //vertex record to the DCEL. 
+      //Create two half-edge records corresponding to the new
+      //breakpoint of the beach line
+      //Set the pointers between them appropriately.
+      //Attach the three new records to the half-edge records
+      //that end at the vertex.
+      
+      //TODO apakah penyebab circle adalah parent & grandparent?
+      ArcNode py = y.parent;
+      ArcNode gpy = y.parent.parent;
+      py.edge.end = event.point;
+      gpy.edge.end = event.point;
+      
+      //3. Check the new triple of consecutive arcs that has the
+      //former left neighbor of a as its middle arc to see if
+      //the two breakpoints of the triple converge.
+      //If so, insert the corresponding circle event into Q and
+      //set pointers between the new circle event in Q and the
+      //corresponding leaf of T.
+      Point leftPoint = T.getTripleLeftPoint(y);
+      if(leftPoint != null) q.add(new Event(leftPoint, T.leftOf(y)));
+      
+      //Do the same for the triple where the former right
+      //neighbor is the middle arc.
       
    }
 

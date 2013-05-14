@@ -2,6 +2,7 @@ package org.graph.datastructure;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class ArcNode {
     //anak kiri dan kanan
@@ -13,6 +14,8 @@ public class ArcNode {
    public ArcNode parent;
    
    public Edge edge;
+
+   public Event circleEvent;
 
    public ArcNode(Arc x, ArcNode parent){
       lValue = x;

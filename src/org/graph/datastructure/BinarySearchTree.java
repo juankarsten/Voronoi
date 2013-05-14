@@ -1,5 +1,7 @@
 package org.graph.datastructure;
 
+import java.awt.Point;
+
 public class BinarySearchTree {
    public ArcNode root;
    
@@ -12,6 +14,18 @@ public class BinarySearchTree {
    
    public boolean isEmpty(){
       return root == null;
+   }
+   public void delete(ArcNode y) {
+      // TODO Auto-generated method stub
+      
+   }
+   public Point getTripleLeftPoint(ArcNode y) {
+      // TODO Auto-generated method stub
+      return null;
+   }
+   public ArcNode leftOf(ArcNode y) {
+      // TODO Auto-generated method stub
+      return null;
    }
    
 //   public void insert(ArcNode x){
