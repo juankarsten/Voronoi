@@ -2,6 +2,7 @@ package org.graph.datastructure;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 
 public class ArcNode {
     //anak kiri dan kanan
@@ -10,7 +11,13 @@ public class ArcNode {
    public Arc lValue, rValue;
    public boolean lBreakPoint;
    
+   public ArrayList<Event> circleEvents;
+   
    public Edge edge;
+
+   public ArcNode parent;
+
+   public Event circleEvent;
 
    public ArcNode(Arc x){
       lValue = x;
@@ -21,6 +28,9 @@ public class ArcNode {
       this.lBreakPoint = true;
    }
    
+   public ArcNode(Arc pjj, ArcNode pjpi) {
+      // TODO Auto-generated constructor stub
+   }
    public boolean isLeaf(){
       return rValue == null;
    }
